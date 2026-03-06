@@ -19,7 +19,7 @@
 		"auth:schema": "better-auth generate --config src/lib/server/auth.ts --output src/lib/server/db/auth.schema.ts --yes"
 	},
 	"devDependencies": {
-		"@better-auth/cli": "^1.4.18",
+		"@better-auth/cli": "~1.4.21",
 		"@eslint/compat": "^2.0.2",
 		"@eslint/js": "^9.39.2",
 		"@libsql/client": "^0.17.0",
@@ -27,7 +27,7 @@
 		"@sveltejs/kit": "^2.50.2",
 		"@sveltejs/vite-plugin-svelte": "^6.2.4",
 		"@types/node": "^24",
-		"better-auth": "^1.4.18",
+		"better-auth": "~1.4.21",
 		"drizzle-kit": "^0.31.8",
 		"drizzle-orm": "^0.45.1",
 		"eslint": "^9.39.2",
@@ -42,5 +42,8 @@
 		"typescript": "^5.9.3",
 		"typescript-eslint": "^8.54.0",
 		"vite": "^7.3.1"
+	},
+	"dependencies": {
+		"lxgw-wenkai-webfont": "^1.7.0"
 	}
 }

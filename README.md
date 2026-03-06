@@ -15,7 +15,7 @@ To recreate this project with the same configuration:
 
 ```sh
 # recreate this project
-bun x sv@0.12.4 create --template minimal --types ts --add prettier eslint drizzle="database:sqlite+sqlite:libsql" better-auth="demo:password" --install bun mai-ars
+bun x sv@0.12.5 create --template minimal --types ts --add prettier eslint drizzle="database:sqlite+sqlite:libsql" better-auth="demo:password" --install bun mai-ars
 ```
 
 ## Developing

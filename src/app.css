@@ -1,0 +1,39 @@
+@import 'lxgw-wenkai-webfont/style.css';
+
+:root {
+	--background-primary: #242424;
+	--background-secondary: #1c1c1c;
+
+	--color-primary: #9face6;
+	--color-secondary: #74ebd5;
+	--color-accent: ;
+	--color-gradient: linear-gradient(to right, #74ebd5 0%, #9face6 100%);
+
+	--text-primary: #ffffff;
+
+	--text-font:
+		Quicksand, LXGW Wenkai, Microsoft YaHei, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+		system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+body {
+	margin: 0;
+}
+
+p {
+	font-family: var(--text-font);
+	color: var(--text-primary);
+}
+
+a {
+	font-family: var(--text-font);
+	text-decoration: none;
+	color: var(--text-primary);
+}
+
+.text-gradient {
+	background: var(--color-gradient);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
