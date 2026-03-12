@@ -1,11 +1,87 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "0c73b270-fbe3-4e1f-9664-c21f1322303f",
+  "id": "05b364cc-9aa3-405f-820f-115d4c25d86c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "task": {
-      "name": "task",
+    "chart_db": {
+      "name": "chart_db",
+      "columns": {
+        "chart_id": {
+          "name": "chart_id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "music_id": {
+          "name": "music_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "difficulty_id": {
+          "name": "difficulty_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "lv": {
+          "name": "lv",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "notes_designer": {
+          "name": "notes_designer",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        }
+      },
+      "indexes": {
+        "chart_db_music_id_idx": {
+          "name": "chart_db_music_id_idx",
+          "columns": [
+            "music_id"
+          ],
+          "isUnique": false
+        },
+        "chart_db_music_id_difficulty_id_idx": {
+          "name": "chart_db_music_id_difficulty_id_idx",
+          "columns": [
+            "music_id",
+            "difficulty_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "chart_db_music_id_music_db_music_id_fk": {
+          "name": "chart_db_music_id_music_db_music_id_fk",
+          "tableFrom": "chart_db",
+          "tableTo": "music_db",
+          "columnsFrom": [
+            "music_id"
+          ],
+          "columnsTo": [
+            "music_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "mars_users": {
+      "name": "mars_users",
       "columns": {
         "id": {
           "name": "id",
@@ -14,24 +90,652 @@
           "notNull": true,
           "autoincrement": false
         },
-        "title": {
-          "name": "title",
+        "auth_id": {
+          "name": "auth_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "mars_users_auth_id_unique": {
+          "name": "mars_users_auth_id_unique",
+          "columns": [
+            "auth_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "mars_users_auth_id_user_id_fk": {
+          "name": "mars_users_auth_id_user_id_fk",
+          "tableFrom": "mars_users",
+          "tableTo": "user",
+          "columnsFrom": [
+            "auth_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "music_db": {
+      "name": "music_db",
+      "columns": {
+        "music_id": {
+          "name": "music_id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "priority": {
-          "name": "priority",
-          "type": "integer",
+        "ver": {
+          "name": "ver",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "artist": {
+          "name": "artist",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "utage_kanji_name": {
+          "name": "utage_kanji_name",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": 1
+          "default": "''"
+        },
+        "genre": {
+          "name": "genre",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {},
       "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "scores": {
+      "name": "scores",
+      "columns": {
+        "score_id": {
+          "name": "score_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "chart_id": {
+          "name": "chart_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "achievement": {
+          "name": "achievement",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "dx_score": {
+          "name": "dx_score",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "judge_critperfect": {
+          "name": "judge_critperfect",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "judge_perfect": {
+          "name": "judge_perfect",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "judge_great": {
+          "name": "judge_great",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "judge_good": {
+          "name": "judge_good",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        },
+        "played_at": {
+          "name": "played_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "play_lamp": {
+          "name": "play_lamp",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "sync_lamp": {
+          "name": "sync_lamp",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "scores_user_id_idx": {
+          "name": "scores_user_id_idx",
+          "columns": [
+            "user_id"
+          ],
+          "isUnique": false
+        },
+        "scores_chart_id_idx": {
+          "name": "scores_chart_id_idx",
+          "columns": [
+            "chart_id"
+          ],
+          "isUnique": false
+        },
+        "scores_user_id_chart_id_idx": {
+          "name": "scores_user_id_chart_id_idx",
+          "columns": [
+            "user_id",
+            "chart_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "scores_user_id_mars_users_id_fk": {
+          "name": "scores_user_id_mars_users_id_fk",
+          "tableFrom": "scores",
+          "tableTo": "mars_users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "scores_chart_id_chart_db_chart_id_fk": {
+          "name": "scores_chart_id_chart_db_chart_id_fk",
+          "tableFrom": "scores",
+          "tableTo": "chart_db",
+          "columnsFrom": [
+            "chart_id"
+          ],
+          "columnsTo": [
+            "chart_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "scores_lamp_check": {
+          "name": "scores_lamp_check",
+          "value": "\"scores\".\"play_lamp\" IN ('UNKNOWN', 'NONE', 'FULL_COMBO', 'FULL_COMBO_PLUS', 'ALL_PERFECT', 'ALL_PERFECT_PLUS')"
+        },
+        "scores_sync_lamp_check": {
+          "name": "scores_sync_lamp_check",
+          "value": "\"scores\".\"sync_lamp\" IN ('UNKNOWN', 'NONE', 'SYNC_PLAY', 'FULL_SYNC', 'FULL_SYNC_PLUS', 'FULL_DX', 'FULL_DX_PLUS')"
+        }
+      }
+    },
+    "user_chart_best_dx": {
+      "name": "user_chart_best_dx",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "chart_id": {
+          "name": "chart_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "source_score_id": {
+          "name": "source_score_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "previous_best_score_id": {
+          "name": "previous_best_score_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "achievement": {
+          "name": "achievement",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "dx_score": {
+          "name": "dx_score",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "rating": {
+          "name": "rating",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        }
+      },
+      "indexes": {
+        "user_chart_best_dx_chart_id_rating_idx": {
+          "name": "user_chart_best_dx_chart_id_rating_idx",
+          "columns": [
+            "chart_id",
+            "rating"
+          ],
+          "isUnique": false
+        },
+        "user_chart_best_dx_user_id_rating_idx": {
+          "name": "user_chart_best_dx_user_id_rating_idx",
+          "columns": [
+            "user_id",
+            "rating"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "user_chart_best_dx_user_id_mars_users_id_fk": {
+          "name": "user_chart_best_dx_user_id_mars_users_id_fk",
+          "tableFrom": "user_chart_best_dx",
+          "tableTo": "mars_users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "user_chart_best_dx_chart_id_chart_db_chart_id_fk": {
+          "name": "user_chart_best_dx_chart_id_chart_db_chart_id_fk",
+          "tableFrom": "user_chart_best_dx",
+          "tableTo": "chart_db",
+          "columnsFrom": [
+            "chart_id"
+          ],
+          "columnsTo": [
+            "chart_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "user_chart_best_dx_source_score_id_scores_score_id_fk": {
+          "name": "user_chart_best_dx_source_score_id_scores_score_id_fk",
+          "tableFrom": "user_chart_best_dx",
+          "tableTo": "scores",
+          "columnsFrom": [
+            "source_score_id"
+          ],
+          "columnsTo": [
+            "score_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "user_chart_best_dx_previous_best_score_id_scores_score_id_fk": {
+          "name": "user_chart_best_dx_previous_best_score_id_scores_score_id_fk",
+          "tableFrom": "user_chart_best_dx",
+          "tableTo": "scores",
+          "columnsFrom": [
+            "previous_best_score_id"
+          ],
+          "columnsTo": [
+            "score_id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "user_chart_best_dx_user_id_chart_id_pk": {
+          "columns": [
+            "user_id",
+            "chart_id"
+          ],
+          "name": "user_chart_best_dx_user_id_chart_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "user_chart_best_std": {
+      "name": "user_chart_best_std",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "chart_id": {
+          "name": "chart_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "source_score_id": {
+          "name": "source_score_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "previous_best_score_id": {
+          "name": "previous_best_score_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "achievement": {
+          "name": "achievement",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "dx_score": {
+          "name": "dx_score",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "rating": {
+          "name": "rating",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        }
+      },
+      "indexes": {
+        "user_chart_best_std_chart_id_rating_idx": {
+          "name": "user_chart_best_std_chart_id_rating_idx",
+          "columns": [
+            "chart_id",
+            "rating"
+          ],
+          "isUnique": false
+        },
+        "user_chart_best_std_user_id_rating_idx": {
+          "name": "user_chart_best_std_user_id_rating_idx",
+          "columns": [
+            "user_id",
+            "rating"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "user_chart_best_std_user_id_mars_users_id_fk": {
+          "name": "user_chart_best_std_user_id_mars_users_id_fk",
+          "tableFrom": "user_chart_best_std",
+          "tableTo": "mars_users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "user_chart_best_std_chart_id_chart_db_chart_id_fk": {
+          "name": "user_chart_best_std_chart_id_chart_db_chart_id_fk",
+          "tableFrom": "user_chart_best_std",
+          "tableTo": "chart_db",
+          "columnsFrom": [
+            "chart_id"
+          ],
+          "columnsTo": [
+            "chart_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "user_chart_best_std_source_score_id_scores_score_id_fk": {
+          "name": "user_chart_best_std_source_score_id_scores_score_id_fk",
+          "tableFrom": "user_chart_best_std",
+          "tableTo": "scores",
+          "columnsFrom": [
+            "source_score_id"
+          ],
+          "columnsTo": [
+            "score_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "user_chart_best_std_previous_best_score_id_scores_score_id_fk": {
+          "name": "user_chart_best_std_previous_best_score_id_scores_score_id_fk",
+          "tableFrom": "user_chart_best_std",
+          "tableTo": "scores",
+          "columnsFrom": [
+            "previous_best_score_id"
+          ],
+          "columnsTo": [
+            "score_id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "user_chart_best_std_user_id_chart_id_pk": {
+          "columns": [
+            "user_id",
+            "chart_id"
+          ],
+          "name": "user_chart_best_std_user_id_chart_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "user_rating_summary_dx": {
+      "name": "user_rating_summary_dx",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "best50_rating": {
+          "name": "best50_rating",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        }
+      },
+      "indexes": {
+        "user_rating_summary_dx_best50_rating_idx": {
+          "name": "user_rating_summary_dx_best50_rating_idx",
+          "columns": [
+            "best50_rating"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "user_rating_summary_dx_user_id_mars_users_id_fk": {
+          "name": "user_rating_summary_dx_user_id_mars_users_id_fk",
+          "tableFrom": "user_rating_summary_dx",
+          "tableTo": "mars_users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "user_rating_summary_std": {
+      "name": "user_rating_summary_std",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "best50_rating": {
+          "name": "best50_rating",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        }
+      },
+      "indexes": {
+        "user_rating_summary_std_best50_rating_idx": {
+          "name": "user_rating_summary_std_best50_rating_idx",
+          "columns": [
+            "best50_rating"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "user_rating_summary_std_user_id_mars_users_id_fk": {
+          "name": "user_rating_summary_std_user_id_mars_users_id_fk",
+          "tableFrom": "user_rating_summary_std",
+          "tableTo": "mars_users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -310,6 +1014,20 @@
           "notNull": true,
           "autoincrement": false,
           "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        },
+        "username": {
+          "name": "username",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "display_username": {
+          "name": "display_username",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         }
       },
       "indexes": {
@@ -317,6 +1035,13 @@
           "name": "user_email_unique",
           "columns": [
             "email"
+          ],
+          "isUnique": true
+        },
+        "user_username_unique": {
+          "name": "user_username_unique",
+          "columns": [
+            "username"
           ],
           "isUnique": true
         }
