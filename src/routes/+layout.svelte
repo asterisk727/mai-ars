@@ -58,4 +58,21 @@
 		justify-content: flex-end;
 		gap: 25px;
 	}
+
+	.nav-links a {
+		cursor: pointer;
+		transition: all var(--transition);
+		text-decoration: underline 1px solid transparent;
+		text-underline-offset: 0.1em;
+	}
+
+	.nav-links a:hover {
+		text-decoration-color: var(--color-primary);
+		text-underline-offset: 0.5em;
+	}
+
+	span:hover {
+		color: var(--color-primary);
+		transition: color var(--transition);
+	}
 </style>
