@@ -7,27 +7,95 @@
 	--color-primary: #9face6;
 	--color-secondary: #74ebd5;
 	--color-accent: ;
+	--color-error: #ff6b6b;
 	--color-gradient: linear-gradient(to right, #74ebd5 0%, #9face6 100%);
 
 	--text-primary: #ffffff;
 
+	--border-radius: 12px;
+
 	--text-font:
 		Quicksand, LXGW Wenkai, Microsoft YaHei, -apple-system, BlinkMacSystemFont, 'Segoe UI',
 		system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+	--duration: 0.3s;
+
+	--transition: var(--duration) ease;
 }
 
 body {
 	margin: 0;
 }
 
-p {
+h1,
+h2,
+h3,
+h4,
+p,
+a,
+span {
 	font-family: var(--text-font);
 	color: var(--text-primary);
 }
 
 a {
-	font-family: var(--text-font);
 	text-decoration: none;
+}
+
+button {
+	padding: 0.6em 1.2em;
+	background-color: var(--background-primary);
+	color: var(--text-primary);
+	font-family: var(--text-font);
+	font-size: 1rem;
+	border: 1px solid var(--background-primary);
+	border-radius: var(--border-radius);
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	transition: border-color var(--duration) ease;
+}
+
+button:hover {
+	border-color: var(--color-primary);
+}
+
+button:focus {
+	border-color: var(--color-primary);
+}
+
+form {
+	background-color: var(--background-primary);
+	padding: 1.2em;
+	border: 1px solid var(--background-primary);
+	border-radius: var(--border-radius);
+	display: flex;
+	flex-direction: column;
+	gap: 0.8em;
+}
+
+input,
+textarea,
+select {
+	background-color: var(--background-secondary);
+	color: var(--text-primary);
+	font-family: var(--text-font);
+	padding: 0.6em 1.2em;
+	border: 1px solid var(--background-secondary);
+	border-radius: var(--border-radius);
+	outline: none;
+	transition: border-color var(--transition);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+	border-color: var(--color-primary);
+}
+
+label {
+	font-family: var(--text-font);
 	color: var(--text-primary);
 }
 
@@ -36,4 +104,17 @@ a {
 	background-clip: text;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
+}
+
+.text-desc {
+	opacity: 0.6;
+	font-size: 0.8rem;
+}
+
+.hoverable {
+	transition: color var(--transition);
+}
+
+.hoverable:hover {
+	color: var(--color-primary);
 }

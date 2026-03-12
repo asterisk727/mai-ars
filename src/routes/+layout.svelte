@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { useSession } from '$lib/auth-client';
 
 	import '../app.css';
 
 	let { children } = $props();
+	const session = useSession();
 </script>
 
 <div id="app">
@@ -15,8 +17,12 @@
 			<a href={resolve('/ranking')}>
 				<span>rankings</span>
 			</a>
-			<a href={resolve('/user')}>
-				<span>account</span>
+			<a href={resolve('/users/account')}>
+				{#if $session.data?.user}
+					<span>Hey, {$session.data.user.name}</span>
+				{:else}
+					<span>account</span>
+				{/if}
 			</a>
 		</div>
 	</nav>
