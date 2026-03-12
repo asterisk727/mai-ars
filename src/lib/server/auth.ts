@@ -5,12 +5,13 @@ import { sveltekitCookies } from 'better-auth/svelte-kit';
 import { env } from '$env/dynamic/private';
 import { getRequestEvent } from '$app/server';
 import { db } from '$lib/server/db';
-import { marsUser } from '$lib/server/db/schema';
+import { marsUsers } from '$lib/server/db/schema';
 
 export const auth = betterAuth({
 	baseURL: env.ORIGIN,
 	secret: env.BETTER_AUTH_SECRET,
 	database: drizzleAdapter(db, { provider: 'sqlite' }),
+	usePlural: true,
 	emailAndPassword: { enabled: true },
 	session: {
 		cookieCache: {
@@ -22,9 +23,8 @@ export const auth = betterAuth({
 		user: {
 			create: {
 				after: async (user) => {
-					await db.insert(marsUser).values({
-						userId: user.id,
-						displayName: user.name
+					await db.insert(marsUsers).values({
+						authId: user.id
 					});
 				}
 			}

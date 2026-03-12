@@ -62,21 +62,23 @@
 
 			if (isSignUp) {
 				result = await authClient.signUp.email({
-					email,
-					password,
-					name: username
+					email: email,
+					password: password,
+					name: username,
+					username: username,
+					displayUsername: username
 				});
 			} else {
 				const isEmail = loginId.includes('@');
 				if (isEmail) {
 					result = await authClient.signIn.email({
 						email: loginId,
-						password
+						password: password
 					});
 				} else {
 					result = await authClient.signIn.username({
 						username: loginId,
-						password
+						password: password
 					});
 				}
 			}
