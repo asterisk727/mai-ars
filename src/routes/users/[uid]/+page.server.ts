@@ -1,7 +1,7 @@
 import {
 	getUserRatingSummaryStd,
 	getUserTotalPlays,
-	userGetBestScoresStdDetailed
+	userGetBestScoresStd
 } from '$lib/server/scores';
 import { getMarsUserByAuthId, getUserByUsername } from '$lib/server/users';
 import { auth } from '$lib/server/auth';
@@ -49,7 +49,7 @@ export const load = (async ({ params, request }) => {
 		? await Promise.all([getUserRatingSummaryStd(marsUser.id), getUserTotalPlays(marsUser.id)])
 		: [null, 0];
 	const best50StdRows = marsUser
-		? await userGetBestScoresStdDetailed(marsUser.id, { ratingSystem: 'STD', limit: 50 })
+		? await userGetBestScoresStd(marsUser.id, { ratingSystem: 'STD', limit: 50 })
 		: [];
 	const best50Std = best50StdRows.map((row) => ({
 		...row,

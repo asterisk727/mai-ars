@@ -1,8 +1,7 @@
 import { db } from '$lib/server/db';
 import { chartDb, musicDb, scores } from '$lib/server/db/schema';
 import { asc, count, desc, eq } from 'drizzle-orm';
-
-export type ChartType = 'STANDARD' | 'DELUXE';
+import { getChartTypeByMusicId, type ChartType } from '$lib/util/charts';
 
 export async function getChartType(chartId: number): Promise<ChartType> {
 	const result = await db
@@ -10,7 +9,7 @@ export async function getChartType(chartId: number): Promise<ChartType> {
 		.from(chartDb)
 		.where(eq(chartDb.chartId, chartId))
 		.get();
-	return result && result.musicId > 9999 ? 'DELUXE' : 'STANDARD';
+	return getChartTypeByMusicId(result?.musicId ?? 0);
 }
 
 export async function getChartConstant(chartId: number) {
@@ -55,7 +54,7 @@ export async function getAllChartsPaginated(options: { limit: number; offset: nu
 	return Promise.all(
 		charts.map(async (chart) => ({
 			...chart,
-			chartType: await getChartType(chart.chartId)
+			chartType: getChartTypeByMusicId(chart.musicId)
 		}))
 	);
 }

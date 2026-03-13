@@ -5,8 +5,8 @@ import {
 	getChartPersonalBestsStd,
 	getChartPersonalBestsStdCount
 } from '$lib/server/scores';
-import { getChartType } from '$lib/server/charts';
-import { getPaginationMeta, parsePageParam } from '$lib/util/pagination';
+import { getChartTypeByMusicId } from '$lib/util/charts';
+import { PAGE_SIZE, getPaginationMeta, parsePageParam } from '$lib/util/pagination';
 
 export type ChartLeaderboardEntry = {
 	rank: number;
@@ -27,22 +27,20 @@ export const load = (async ({ params, url }) => {
 	}
 
 	const chart = await getChartLeaderboardInfo(chartId);
-	const chartType = await getChartType(chartId);
 
 	if (!chart) {
 		throw error(404, 'Chart not found');
 	}
 
-	const pageSize = 50;
 	const totalItems = await getChartPersonalBestsStdCount(chartId);
 	const pagination = getPaginationMeta(
 		totalItems,
 		parsePageParam(url.searchParams.get('page')),
-		pageSize
+		PAGE_SIZE
 	);
 
 	const rows = await getChartPersonalBestsStd(chartId, {
-		limit: pageSize,
+		limit: PAGE_SIZE,
 		offset: pagination.offset
 	});
 	const leaderboard = rows.map((entry, index) => ({
@@ -53,7 +51,7 @@ export const load = (async ({ params, url }) => {
 	return {
 		chart: {
 			...chart,
-			chartType
+			chartType: getChartTypeByMusicId(chart.musicId)
 		},
 		pagination,
 		leaderboard: leaderboard as ChartLeaderboardEntry[]

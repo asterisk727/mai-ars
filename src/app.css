@@ -177,3 +177,9 @@ button.hoverable {
 	margin: 0 0 1rem;
 	border: none;
 }
+
+.container {
+	width: min(1000px, calc(100% - 64px));
+	margin: 96px auto 0;
+	padding-bottom: 200px;
+}

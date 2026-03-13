@@ -363,56 +363,7 @@ export async function userUpsertScore(input: ScoreInsert) {
 	};
 }
 
-export async function userGetBestScores(userId: string, options: BestScoreQueryOptions = {}) {
-	const { ratingSystem = 'STD', chartId, limit, offset } = options;
-
-	if (ratingSystem === 'DX') {
-		let query = db
-			.select()
-			.from(userChartBestDx)
-			.where(
-				chartId === undefined
-					? eq(userChartBestDx.userId, userId)
-					: and(eq(userChartBestDx.userId, userId), eq(userChartBestDx.chartId, chartId))
-			)
-			.orderBy(
-				desc(userChartBestDx.rating),
-				desc(userChartBestDx.achievement),
-				desc(userChartBestDx.dxScore)
-			)
-			.$dynamic();
-
-		if (offset !== undefined) query = query.offset(offset);
-		if (limit !== undefined) query = query.limit(limit);
-
-		return query;
-	}
-
-	let query = db
-		.select()
-		.from(userChartBestStd)
-		.where(
-			chartId === undefined
-				? eq(userChartBestStd.userId, userId)
-				: and(eq(userChartBestStd.userId, userId), eq(userChartBestStd.chartId, chartId))
-		)
-		.orderBy(
-			desc(userChartBestStd.rating),
-			desc(userChartBestStd.achievement),
-			desc(userChartBestStd.dxScore)
-		)
-		.$dynamic();
-
-	if (offset !== undefined) query = query.offset(offset);
-	if (limit !== undefined) query = query.limit(limit);
-
-	return query;
-}
-
-export async function userGetBestScoresStdDetailed(
-	userId: string,
-	options: BestScoreQueryOptions = {}
-) {
+export async function userGetBestScoresStd(userId: string, options: BestScoreQueryOptions = {}) {
 	const { ratingSystem = 'STD', chartId, limit = 50, offset } = options;
 
 	if (ratingSystem === 'DX') {
@@ -481,6 +432,8 @@ export async function userGetBestScoresStdDetailed(
 
 	return query;
 }
+
+// Todo: DX rating equivalent
 
 export async function userGetRecentScores(userId: string, options: ScoreQueryOptions = {}) {
 	const { chartId, limit = 50, offset } = options;

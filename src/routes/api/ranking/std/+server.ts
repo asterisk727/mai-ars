@@ -1,19 +1,18 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { getUsersRankedByStdRating, getUsersRankedByStdRatingCount } from '$lib/server/scores';
-import { getPaginationMeta, parsePageParam } from '$lib/util/pagination';
+import { PAGE_SIZE, getPaginationMeta, parsePageParam } from '$lib/util/pagination';
 
 export const GET: RequestHandler = async ({ url }) => {
-	const pageSize = 50;
 	const totalItems = await getUsersRankedByStdRatingCount();
 	const pagination = getPaginationMeta(
 		totalItems,
 		parsePageParam(url.searchParams.get('page')),
-		pageSize
+		PAGE_SIZE
 	);
 
 	const rankings = await getUsersRankedByStdRating({
-		limit: pageSize,
+		limit: PAGE_SIZE,
 		offset: pagination.offset
 	});
 

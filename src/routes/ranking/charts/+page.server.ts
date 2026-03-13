@@ -1,8 +1,7 @@
 import type { PageServerLoad } from './$types';
-import { getAllChartsPaginated, getChartPlayCount, type ChartType } from '$lib/server/charts';
-import { getPaginationMeta, parsePageParam } from '$lib/util/pagination';
-
-const PAGE_SIZE = 50;
+import { getAllChartsPaginated, getChartPlayCount } from '$lib/server/charts';
+import { type ChartType } from '$lib/util/charts';
+import { PAGE_SIZE, getPaginationMeta, parsePageParam } from '$lib/util/pagination';
 
 export type ChartBrowseEntry = {
 	chartId: number;

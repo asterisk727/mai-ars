@@ -4,11 +4,9 @@
 	import RankingRow from '$lib/ui/RankingRow.svelte';
 	import PaginationControls from '$lib/ui/PaginationControls.svelte';
 	import { getChartTypeIcon, getJacketPath } from '$lib/util/charts';
+	import { getDifficultyClass, getDifficultyName } from '$lib/util/difficulty';
 
 	let { data }: { data: PageData } = $props();
-
-	const difficultyNames = ['Basic', 'Advanced', 'Expert', 'Master', 'Re:MASTER'] as const;
-	const difficultyClasses = ['level-0', 'level-1', 'level-2', 'level-3', 'level-4'] as const;
 	const jacketPath = $derived(getJacketPath(data.chart.musicId));
 </script>
 
@@ -30,11 +28,11 @@
 				</div>
 				<p class="text-desc">{data.chart.songArtist}</p>
 				<p class="text-desc">
-					<span class={`difficulty-name ${difficultyClasses[data.chart.difficultyId] ?? ''}`}>
-						{difficultyNames[data.chart.difficultyId] ?? 'Unknown'}
+					<span class={`difficulty-name ${getDifficultyClass(data.chart.difficultyId)}`}>
+						{getDifficultyName(data.chart.difficultyId)}
 					</span>
 					·
-					<span class={`difficulty-level ${difficultyClasses[data.chart.difficultyId] ?? ''}`}>
+					<span class={`difficulty-level ${getDifficultyClass(data.chart.difficultyId)}`}>
 						Lv {data.chart.chartConstant.toFixed(1)}
 					</span>
 					· {data.chart.chartDesigner || 'Unknown'}
@@ -74,15 +72,10 @@
 </div>
 
 <style>
-	.container {
-		max-width: 900px;
-		margin: 96px max(32px, calc((100vw - 900px) / 2));
-	}
-
 	.main {
 		background-color: var(--background-secondary);
 		margin-top: 24px;
-		padding: 16px 24px 24px;
+		padding: 32px;
 		border-radius: var(--border-radius);
 	}
 
@@ -105,10 +98,6 @@
 		object-fit: cover;
 		border-radius: 8px;
 		background-color: var(--background-primary);
-	}
-
-	.title {
-		margin: 0;
 	}
 
 	.title {

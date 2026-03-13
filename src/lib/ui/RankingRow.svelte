@@ -59,6 +59,10 @@
 		white-space: nowrap;
 	}
 
+	.name {
+		min-width: 0;
+	}
+
 	.username {
 		font-size: 0.8rem;
 		opacity: 0.6;
@@ -80,9 +84,9 @@
 		margin-right: 12px;
 	}
 
-	@media (max-width: 760px) {
+	@media (max-width: 600px) {
 		.username {
-			min-width: 120px;
+			display: none;
 		}
 	}
 </style>

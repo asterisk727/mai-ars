@@ -3,11 +3,9 @@
 	import { resolve } from '$app/paths';
 	import PaginationControls from '$lib/ui/PaginationControls.svelte';
 	import { getChartTypeIcon, getJacketPath } from '$lib/util/charts';
+	import { getDifficultyClass, getDifficultyName } from '$lib/util/difficulty';
 
 	let { data }: { data: PageData } = $props();
-
-	const difficultyNames = ['Basic', 'Advanced', 'Expert', 'Master', 'Re:MASTER'] as const;
-	const difficultyClasses = ['level-0', 'level-1', 'level-2', 'level-3', 'level-4'] as const;
 </script>
 
 <div class="container">
@@ -48,10 +46,10 @@
 						</div>
 						<div class="stats">
 							<div class="difficulty-stats">
-								<span class={`difficulty-name ${difficultyClasses[chart.difficultyId] ?? ''}`}>
-									{difficultyNames[chart.difficultyId] ?? 'Unknown'}
+								<span class={`difficulty-name ${getDifficultyClass(chart.difficultyId)}`}>
+									{getDifficultyName(chart.difficultyId)}
 								</span>
-								<span class={`difficulty-level ${difficultyClasses[chart.difficultyId] ?? ''}`}>
+								<span class={`difficulty-level ${getDifficultyClass(chart.difficultyId)}`}>
 									Lv {chart.chartConstant.toFixed(1)}
 								</span>
 							</div>
@@ -70,15 +68,10 @@
 </div>
 
 <style>
-	.container {
-		max-width: 1000px;
-		margin: 96px max(32px, calc((100vw - 1000px) / 2));
-	}
-
 	.main {
 		background-color: var(--background-secondary);
 		margin-top: 24px;
-		padding: 16px 24px 24px;
+		padding: 32px;
 		border-radius: var(--border-radius);
 	}
 

@@ -8,6 +8,8 @@ export type PaginationMeta = {
 	hasNext: boolean;
 };
 
+export const PAGE_SIZE = 50;
+
 export function parsePageParam(value: string | null) {
 	const parsed = Number.parseInt(value ?? '1', 10);
 	if (!Number.isFinite(parsed) || parsed < 1) return 1;

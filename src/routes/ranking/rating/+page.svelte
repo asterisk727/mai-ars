@@ -45,15 +45,10 @@
 </div>
 
 <style>
-	.container {
-		max-width: 900px;
-		margin: 96px max(32px, calc((100vw - 900px) / 2));
-	}
-
 	.main {
 		background-color: var(--background-secondary);
 		margin-top: 24px;
-		padding: 16px 24px 24px;
+		padding: 32px;
 		border-radius: var(--border-radius);
 	}
 

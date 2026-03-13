@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { getDifficultyClass } from '$lib/util/difficulty';
+
 	let {
 		title,
 		musicId,
@@ -18,6 +20,7 @@
 	} = $props();
 
 	const jacketPath = $derived(`/d/jackets/${String(musicId % 10000).padStart(6, '0')}.png`);
+	const difficultyClass = $derived(getDifficultyClass(difficultyId));
 </script>
 
 <div class="score-card">
@@ -25,7 +28,7 @@
 	<div class="score-info">
 		<div class="first-row">
 			<span class="song-title">{title}</span>
-			<span class={`song-constant level-${difficultyId}`}>{level.toFixed(1)}</span>
+			<span class={`song-constant ${difficultyClass}`}>{level.toFixed(1)}</span>
 		</div>
 		<div class="second-row">
 			<div class="grade-info text-gradient">
