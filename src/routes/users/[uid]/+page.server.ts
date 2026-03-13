@@ -1,4 +1,8 @@
-import { userGetBestScoresStdDetailed } from '$lib/server/scores';
+import {
+	getUserRatingSummaryStd,
+	getUserTotalPlays,
+	userGetBestScoresStdDetailed
+} from '$lib/server/scores';
 import { getMarsUserByAuthId, getUserByUsername } from '$lib/server/users';
 import { auth } from '$lib/server/auth';
 import { getLetterGrade } from '$lib/util/rating';
@@ -14,6 +18,8 @@ type ProfilePageData = {
 		createdAt: Date;
 	};
 	isOwner: boolean;
+	best50RatingStd: number;
+	totalPlays: number;
 	best50Std: {
 		chartId: number;
 		musicId: number;
@@ -39,6 +45,9 @@ export const load = (async ({ params, request }) => {
 	const isOwner = session?.user?.username === profile.username;
 
 	const marsUser = await getMarsUserByAuthId(profile.id);
+	const [ratingSummaryStd, totalPlays] = marsUser
+		? await Promise.all([getUserRatingSummaryStd(marsUser.id), getUserTotalPlays(marsUser.id)])
+		: [null, 0];
 	const best50StdRows = marsUser
 		? await userGetBestScoresStdDetailed(marsUser.id, { ratingSystem: 'STD', limit: 50 })
 		: [];
@@ -56,6 +65,8 @@ export const load = (async ({ params, request }) => {
 			createdAt: profile.createdAt
 		},
 		isOwner,
+		best50RatingStd: ratingSummaryStd?.best50Rating ?? 0,
+		totalPlays,
 		best50Std
 	};
 }) satisfies PageServerLoad<ProfilePageData>;

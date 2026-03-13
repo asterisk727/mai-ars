@@ -9,7 +9,19 @@
 <div class="container">
 	<h1>{data.profile.displayUsername ?? data.profile.username}</h1>
 	<div class="main">
-		<p>@{data.profile.username}</p>
+		<h2>@{data.profile.username}'s MaiARS Profile</h2>
+		<hr class="divider" />
+
+		<div class="stats-row">
+			<div class="stat-item">
+				<span class="text-desc">B50 (STD)</span>
+				<p class="stat-value">{Math.floor(data.best50RatingStd)}</p>
+			</div>
+			<div class="stat-item">
+				<span class="text-desc">Total Plays</span>
+				<p class="stat-value">{data.totalPlays}</p>
+			</div>
+		</div>
 
 		<div class="best50">
 			<h2>Best 50 (Standard Rating)</h2>
@@ -65,6 +77,28 @@
 
 	.actions {
 		padding-top: 24px;
+	}
+
+	.stats-row {
+		display: flex;
+		align-items: flex-end;
+		gap: 20px;
+		margin: 16px 0px;
+		flex-wrap: wrap;
+	}
+
+	.stat-item {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.stat-value {
+		margin: 0;
+		font-size: 1.65rem;
+		font-weight: 700;
+		color: var(--color-primary);
+		line-height: 1.1;
 	}
 
 	.best50 {
