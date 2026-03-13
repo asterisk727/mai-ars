@@ -54,12 +54,14 @@
 		{:else}
 			<div class="ranking-list">
 				{#each data.leaderboard as entry (entry.rank)}
-					<RankingRow
-						rank={entry.rank}
-						displayName={entry.displayUsername ?? entry.name}
-						username={entry.username ?? entry.name}
-						achievement={entry.achievement}
-					/>
+					<a class="ranking-link" href={resolve(`/users/${entry.username}`)}>
+						<RankingRow
+							rank={entry.rank}
+							displayName={entry.displayUsername ?? entry.name}
+							username={entry.username}
+							achievement={entry.achievement}
+						/>
+					</a>
 				{/each}
 			</div>
 			<PaginationControls
@@ -153,5 +155,9 @@
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
+	}
+
+	.ranking-link {
+		display: block;
 	}
 </style>

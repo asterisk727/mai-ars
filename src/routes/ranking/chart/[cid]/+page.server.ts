@@ -10,8 +10,8 @@ import { PAGE_SIZE, getPaginationMeta, parsePageParam } from '$lib/util/paginati
 
 export type ChartLeaderboardEntry = {
 	rank: number;
-	username: string | null;
-	displayUsername: string | null;
+	username: string;
+	displayUsername: string;
 	name: string;
 	achievement: number;
 	dxScore: number;

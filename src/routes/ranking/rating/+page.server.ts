@@ -4,8 +4,8 @@ import type { PaginationMeta } from '$lib/util/pagination';
 export type StdRankingEntry = {
 	rank: number;
 	userId: string;
-	username: string | null;
-	displayUsername: string | null;
+	username: string;
+	displayUsername: string;
 	name: string;
 	best50RatingStd: number;
 };

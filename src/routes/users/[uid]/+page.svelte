@@ -31,15 +31,17 @@
 			{:else}
 				<div class="best50-grid">
 					{#each data.best50Std as entry (entry.chartId)}
-						<SongRatingCard
-							title={entry.title}
-							musicId={entry.musicId}
-							difficultyId={entry.difficultyId}
-							level={entry.level}
-							achievement={entry.achievement}
-							letterGrade={entry.letterGrade}
-							rating={entry.rating}
-						/>
+						<a class="song-link" href={resolve(`/ranking/chart/${entry.chartId}`)}>
+							<SongRatingCard
+								title={entry.title}
+								musicId={entry.musicId}
+								difficultyId={entry.difficultyId}
+								level={entry.level}
+								achievement={entry.achievement}
+								letterGrade={entry.letterGrade}
+								rating={entry.rating}
+							/>
+						</a>
 					{/each}
 				</div>
 			{/if}
@@ -104,6 +106,10 @@
 		display: grid;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: 15px;
+	}
+
+	.song-link {
+		display: block;
 	}
 
 	@media (max-width: 980px) {

@@ -27,12 +27,14 @@
 		{:else}
 			<div class="ranking-list">
 				{#each data.ranking as entry (entry.rank)}
-					<RankingRow
-						rank={entry.rank}
-						displayName={entry.displayUsername ?? entry.name}
-						username={entry.username ?? entry.name}
-						rating={entry.best50RatingStd}
-					/>
+					<a class="ranking-link" href={resolve(`/users/${entry.username}`)}>
+						<RankingRow
+							rank={entry.rank}
+							displayName={entry.displayUsername ?? entry.name}
+							username={entry.username}
+							rating={entry.best50RatingStd}
+						/>
+					</a>
 				{/each}
 			</div>
 			<PaginationControls
@@ -57,5 +59,9 @@
 		flex-direction: column;
 		gap: 8px;
 		margin-top: 12px;
+	}
+
+	.ranking-link {
+		display: block;
 	}
 </style>
