@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import { resolve } from '$app/paths';
 	import RankingRow from '$lib/ui/RankingRow.svelte';
+	import PaginationControls from '$lib/ui/PaginationControls.svelte';
 
 	type Props = { data: PageData };
 
@@ -11,6 +13,14 @@
 	<h1>Global Rankings</h1>
 	<div class="main">
 		<h2>Standard rating leaderboard</h2>
+		{#if data.pagination.totalItems > 0}
+			<p class="text-desc">
+				Showing {data.pagination.offset + 1}-{Math.min(
+					data.pagination.offset + data.pagination.pageSize,
+					data.pagination.totalItems
+				)} of {data.pagination.totalItems} players
+			</p>
+		{/if}
 
 		{#if data.ranking.length === 0}
 			<p>No ranking data yet.</p>
@@ -25,6 +35,11 @@
 					/>
 				{/each}
 			</div>
+			<PaginationControls
+				basePath={resolve('/ranking/rating')}
+				page={data.pagination.page}
+				totalPages={data.pagination.totalPages}
+			/>
 		{/if}
 	</div>
 </div>
@@ -38,14 +53,14 @@
 	.main {
 		background-color: var(--background-secondary);
 		margin-top: 24px;
-		padding: 16px 32px 32px;
+		padding: 16px 24px 24px;
 		border-radius: var(--border-radius);
 	}
 
 	.ranking-list {
 		display: flex;
 		flex-direction: column;
-		gap: 10px;
+		gap: 8px;
 		margin-top: 12px;
 	}
 </style>

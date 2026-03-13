@@ -153,6 +153,7 @@ label {
 .text-desc {
 	opacity: 0.6;
 	font-size: 0.8rem;
+	margin: 0;
 }
 
 .hoverable {

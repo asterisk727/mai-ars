@@ -3,13 +3,20 @@
 		rank,
 		displayName,
 		username,
-		rating
+		rating,
+		achievement
 	}: {
 		rank: number;
 		displayName: string;
 		username: string;
-		rating: number;
+		rating?: number;
+		achievement?: number;
 	} = $props();
+
+	const valueLabel = $derived(
+		typeof achievement === 'number' ? `${achievement.toFixed(4)}%` : `${Math.floor(rating ?? 0)}`
+	);
+	const valueClass = $derived(typeof achievement === 'number' ? 'achievement' : 'rating');
 </script>
 
 <div class="ranking-row">
@@ -18,7 +25,7 @@
 		<span class="name">{displayName}</span>
 		<span class="username">@{username}</span>
 	</div>
-	<span class="rating">{Math.floor(rating)}</span>
+	<span class={valueClass}>{valueLabel}</span>
 </div>
 
 <style>
@@ -55,6 +62,8 @@
 	.username {
 		font-size: 0.8rem;
 		opacity: 0.6;
+		text-align: right;
+		min-width: 180px;
 	}
 
 	.rating {
@@ -62,5 +71,18 @@
 		font-weight: 600;
 		color: var(--color-secondary);
 		margin-right: 12px;
+	}
+
+	.achievement {
+		font-size: 1.02rem;
+		font-weight: 600;
+		color: var(--color-primary);
+		margin-right: 12px;
+	}
+
+	@media (max-width: 760px) {
+		.username {
+			min-width: 120px;
+		}
 	}
 </style>

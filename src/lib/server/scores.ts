@@ -63,8 +63,8 @@ export async function getUserRatingSummaryDx(userId: string) {
 	return db.select().from(userRatingSummaryDx).where(eq(userRatingSummaryDx.userId, userId)).get();
 }
 
-export async function getUsersRankedByStdRating() {
-	return db
+export async function getUsersRankedByStdRating(options: { limit?: number; offset?: number } = {}) {
+	let query = db
 		.select({
 			userId: userRatingSummaryStd.userId,
 			best50RatingStd: userRatingSummaryStd.best50Rating,
@@ -77,8 +77,83 @@ export async function getUsersRankedByStdRating() {
 		.from(userRatingSummaryStd)
 		.innerJoin(marsUsers, eq(userRatingSummaryStd.userId, marsUsers.id))
 		.innerJoin(user, eq(marsUsers.authId, user.id))
-		.orderBy(desc(userRatingSummaryStd.best50Rating));
+		.orderBy(desc(userRatingSummaryStd.best50Rating))
+		.$dynamic();
+
+	if (options.offset !== undefined) query = query.offset(options.offset);
+	if (options.limit !== undefined) query = query.limit(options.limit);
+
+	return query;
 }
+
+// Todo: DX rating equivalent
+
+export async function getUsersRankedByStdRatingCount() {
+	const result = await db.select({ total: count() }).from(userRatingSummaryStd).get();
+	return result?.total ?? 0;
+}
+
+// Todo: DX rating equivalent
+
+export async function getChartLeaderboardInfo(chartId: number) {
+	return db
+		.select({
+			chartId: chartDb.chartId,
+			musicId: chartDb.musicId,
+			difficultyId: chartDb.difficultyId,
+			chartConstant: chartDb.lv,
+			chartDesigner: chartDb.notesDesigner,
+			songName: musicDb.name,
+			songArtist: musicDb.artist
+		})
+		.from(chartDb)
+		.innerJoin(musicDb, eq(chartDb.musicId, musicDb.musicId))
+		.where(eq(chartDb.chartId, chartId))
+		.get();
+}
+
+export async function getChartPersonalBestsStd(
+	chartId: number,
+	options: { limit?: number; offset?: number } = {}
+) {
+	let query = db
+		.select({
+			userId: userChartBestStd.userId,
+			achievement: userChartBestStd.achievement,
+			dxScore: userChartBestStd.dxScore,
+			rating: userChartBestStd.rating,
+			updatedAt: userChartBestStd.updatedAt,
+			username: user.username,
+			displayUsername: user.displayUsername,
+			name: user.name,
+			image: user.image
+		})
+		.from(userChartBestStd)
+		.innerJoin(marsUsers, eq(userChartBestStd.userId, marsUsers.id))
+		.innerJoin(user, eq(marsUsers.authId, user.id))
+		.where(eq(userChartBestStd.chartId, chartId))
+		.orderBy(desc(userChartBestStd.achievement), desc(userChartBestStd.dxScore))
+		.$dynamic();
+
+	if (options.offset !== undefined) query = query.offset(options.offset);
+	if (options.limit !== undefined) query = query.limit(options.limit);
+
+	return query;
+}
+
+// Todo: DX rating equivalent
+
+export async function getChartPersonalBestsStdCount(chartId: number) {
+	const result = await db
+		.select({ total: count() })
+		.from(userChartBestStd)
+		.where(eq(userChartBestStd.chartId, chartId))
+		.get();
+
+	return result?.total ?? 0;
+}
+
+// Todo: DX rating equivalent
 
 export async function getUserTotalPlays(userId: string) {
 	const result = await db
