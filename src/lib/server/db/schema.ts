@@ -37,7 +37,6 @@ export const musicDb = sqliteTable('music_db', {
 	name: text('name').notNull(),
 	ver: text('ver').notNull(),
 	artist: text('artist').notNull(),
-	utageKanjiName: text('utage_kanji_name').notNull().default(''),
 	genre: text('genre').notNull()
 });
 
@@ -50,6 +49,7 @@ export const chartDb = sqliteTable(
 			.references(() => musicDb.musicId, { onDelete: 'cascade' }),
 		difficultyId: integer('difficulty_id').notNull(),
 		lv: real('lv').notNull(),
+		utageKanjiName: text('utage_kanji_name').notNull().default(''),
 		notesDesigner: text('notes_designer').notNull().default('')
 	},
 	(table) => [

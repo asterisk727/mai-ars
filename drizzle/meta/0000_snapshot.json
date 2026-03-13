@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "05b364cc-9aa3-405f-820f-115d4c25d86c",
+  "id": "03471d47-245b-461a-9fcf-086b08960e04",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "chart_db": {
@@ -34,6 +34,14 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "utage_kanji_name": {
+          "name": "utage_kanji_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
         },
         "notes_designer": {
           "name": "notes_designer",
@@ -156,14 +164,6 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
-        },
-        "utage_kanji_name": {
-          "name": "utage_kanji_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "''"
         },
         "genre": {
           "name": "genre",

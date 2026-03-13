@@ -3,6 +3,7 @@ CREATE TABLE `chart_db` (
 	`music_id` integer NOT NULL,
 	`difficulty_id` integer NOT NULL,
 	`lv` real NOT NULL,
+	`utage_kanji_name` text DEFAULT '' NOT NULL,
 	`notes_designer` text DEFAULT '' NOT NULL,
 	FOREIGN KEY (`music_id`) REFERENCES `music_db`(`music_id`) ON UPDATE no action ON DELETE cascade
 );
@@ -21,7 +22,6 @@ CREATE TABLE `music_db` (
 	`name` text NOT NULL,
 	`ver` text NOT NULL,
 	`artist` text NOT NULL,
-	`utage_kanji_name` text DEFAULT '' NOT NULL,
 	`genre` text NOT NULL
 );
 --> statement-breakpoint
