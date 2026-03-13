@@ -19,10 +19,10 @@
 			</a>
 			{#if $session.data?.user}
 				<a href={resolve('/users/')}>
-					<span>Hey, {$session.data.user.name}</span>
+					<span>account</span>
 				</a>
 			{:else}
-				<a href={resolve('/account')}><span>account</span></a>
+				<a href={resolve('/account')}><span>log in</span></a>
 			{/if}
 		</div>
 	</nav>
@@ -38,7 +38,6 @@
 
 	nav {
 		display: flex;
-		position: sticky;
 		justify-content: space-between;
 		align-items: center;
 

@@ -5,7 +5,9 @@ import {
 	userChartBestDx,
 	userChartBestStd,
 	userRatingSummaryDx,
-	userRatingSummaryStd
+	userRatingSummaryStd,
+	chartDb,
+	musicDb
 } from '$lib/server/db/schema';
 
 import { calculateRatingStd, calculateRatingDx } from '$lib/util/rating';
@@ -299,6 +301,79 @@ export async function userGetBestScores(userId: string, options: BestScoreQueryO
 
 	if (offset !== undefined) query = query.offset(offset);
 	if (limit !== undefined) query = query.limit(limit);
+
+	return query;
+}
+
+export async function userGetBestScoresStdDetailed(
+	userId: string,
+	options: BestScoreQueryOptions = {}
+) {
+	const { ratingSystem = 'STD', chartId, limit = 50, offset } = options;
+
+	if (ratingSystem === 'DX') {
+		let query = db
+			.select({
+				chartId: userChartBestDx.chartId,
+				achievement: userChartBestDx.achievement,
+				dxScore: userChartBestDx.dxScore,
+				rating: userChartBestDx.rating,
+				updatedAt: userChartBestDx.updatedAt,
+				musicId: chartDb.musicId,
+				difficultyId: chartDb.difficultyId,
+				level: chartDb.lv,
+				title: musicDb.name
+			})
+			.from(userChartBestDx)
+			.innerJoin(chartDb, eq(userChartBestDx.chartId, chartDb.chartId))
+			.innerJoin(musicDb, eq(chartDb.musicId, musicDb.musicId))
+			.where(
+				chartId === undefined
+					? eq(userChartBestDx.userId, userId)
+					: and(eq(userChartBestDx.userId, userId), eq(userChartBestDx.chartId, chartId))
+			)
+			.orderBy(
+				desc(userChartBestDx.rating),
+				desc(userChartBestDx.achievement),
+				desc(userChartBestDx.dxScore)
+			)
+			.$dynamic();
+
+		if (offset !== undefined) query = query.offset(offset);
+		query = query.limit(limit);
+
+		return query;
+	}
+
+	let query = db
+		.select({
+			chartId: userChartBestStd.chartId,
+			achievement: userChartBestStd.achievement,
+			dxScore: userChartBestStd.dxScore,
+			rating: userChartBestStd.rating,
+			updatedAt: userChartBestStd.updatedAt,
+			musicId: chartDb.musicId,
+			difficultyId: chartDb.difficultyId,
+			level: chartDb.lv,
+			title: musicDb.name
+		})
+		.from(userChartBestStd)
+		.innerJoin(chartDb, eq(userChartBestStd.chartId, chartDb.chartId))
+		.innerJoin(musicDb, eq(chartDb.musicId, musicDb.musicId))
+		.where(
+			chartId === undefined
+				? eq(userChartBestStd.userId, userId)
+				: and(eq(userChartBestStd.userId, userId), eq(userChartBestStd.chartId, chartId))
+		)
+		.orderBy(
+			desc(userChartBestStd.rating),
+			desc(userChartBestStd.achievement),
+			desc(userChartBestStd.dxScore)
+		)
+		.$dynamic();
+
+	if (offset !== undefined) query = query.offset(offset);
+	query = query.limit(limit);
 
 	return query;
 }

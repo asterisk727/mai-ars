@@ -188,7 +188,7 @@
 	.main {
 		background-color: var(--background-secondary);
 		margin-top: 24px;
-		padding: 32px;
+		padding: 16px 32px 32px;
 		border-radius: var(--border-radius);
 	}
 

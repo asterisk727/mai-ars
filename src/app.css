@@ -3,12 +3,18 @@
 :root {
 	--background-primary: #242424;
 	--background-secondary: #1c1c1c;
+	--backkground-tertiary: #333333;
 
 	--color-primary: #9face6;
 	--color-secondary: #74ebd5;
-	--color-accent: ;
 	--color-error: #ff6b6b;
 	--color-gradient: linear-gradient(to right, #74ebd5 0%, #9face6 100%);
+
+	--color-level-0: #6ed43e;
+	--color-level-1: #f7b807;
+	--color-level-2: #ff828d;
+	--color-level-3: #a051dc;
+	--color-level-4: #c299e7;
 
 	--text-primary: #ffffff;
 
@@ -23,8 +29,34 @@
 	--transition: var(--duration) ease;
 }
 
+* {
+	scrollbar-width: thin;
+	scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+html,
 body {
 	margin: 0;
+	background-color: var(--background-primary);
+	color: var(--text-primary);
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: rgba(255, 255, 255, 0.2);
+	border-radius: var(--border-radius);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background-color: var(--color-tertiary);
 }
 
 h1,
@@ -36,6 +68,18 @@ a,
 span {
 	font-family: var(--text-font);
 	color: var(--text-primary);
+}
+
+h1 {
+	font-size: 2rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
 }
 
 a {
@@ -54,7 +98,7 @@ button {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	transition: border-color var(--duration) ease;
+	transition: border-color var(--transition);
 }
 
 button:hover {
@@ -117,4 +161,18 @@ label {
 
 .hoverable:hover {
 	color: var(--color-primary);
+}
+
+button.hoverable {
+	transition:
+		border-color var(--transition),
+		color var(--transition);
+}
+
+.divider {
+	height: 1px;
+	width: 80%;
+	background-color: var(--color-primary);
+	margin: 0 0 1rem;
+	border: none;
 }

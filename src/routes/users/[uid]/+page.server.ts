@@ -1,4 +1,7 @@
-import { getUserByUsername } from '$lib/server/users';
+import { userGetBestScoresStdDetailed } from '$lib/server/scores';
+import { getMarsUserByAuthId, getUserByUsername } from '$lib/server/users';
+import { auth } from '$lib/server/auth';
+import { getLetterGrade } from '$lib/util/rating';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -10,14 +13,39 @@ type ProfilePageData = {
 		image: string | null;
 		createdAt: Date;
 	};
+	isOwner: boolean;
+	best50Std: {
+		chartId: number;
+		musicId: number;
+		title: string;
+		difficultyId: number;
+		level: number;
+		achievement: number;
+		dxScore: number;
+		rating: number;
+		letterGrade: string;
+		updatedAt: Date;
+	}[];
 };
 
-export const load = (async ({ params }) => {
+export const load = (async ({ params, request }) => {
 	const profile = await getUserByUsername(params.uid);
 
 	if (!profile) {
 		error(404, 'User not found');
 	}
+
+	const session = await auth.api.getSession({ headers: request.headers });
+	const isOwner = session?.user?.username === profile.username;
+
+	const marsUser = await getMarsUserByAuthId(profile.id);
+	const best50StdRows = marsUser
+		? await userGetBestScoresStdDetailed(marsUser.id, { ratingSystem: 'STD', limit: 50 })
+		: [];
+	const best50Std = best50StdRows.map((row) => ({
+		...row,
+		letterGrade: getLetterGrade(row.achievement, 'STD') ?? 'D'
+	}));
 
 	return {
 		profile: {
@@ -26,6 +54,8 @@ export const load = (async ({ params }) => {
 			name: profile.name,
 			image: profile.image,
 			createdAt: profile.createdAt
-		}
+		},
+		isOwner,
+		best50Std
 	};
 }) satisfies PageServerLoad<ProfilePageData>;

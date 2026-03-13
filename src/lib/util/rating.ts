@@ -12,9 +12,9 @@ const ratingMultTable: Record<RatingType, RatingMultRow[]> = {
 	STD: [
 		[100.5, 22.4, 'SSS+'],
 		[100.0, 21.6, 'SSS'],
-		[99.5, 21.1, 'SSp'],
+		[99.5, 21.1, 'SS+'],
 		[99, 20.8, 'SS'],
-		[98, 20.3, 'Sp'],
+		[98, 20.3, 'S+'],
 		[97, 20, 'S'],
 		[94, 16.8, 'AAA'],
 		[90, 15.2, 'AA'],
@@ -54,7 +54,8 @@ export async function calculateRatingStd(score: Score) {
 	return (
 		score.achievement *
 		(getScoreMult(score.achievement, 'STD') ?? 0) *
-		(await getChartConstant(score.chartId))
+		(await getChartConstant(score.chartId)) *
+		0.01
 	);
 }
 export async function calculateRatingDx(score: Score) {
