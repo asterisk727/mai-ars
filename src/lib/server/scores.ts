@@ -1,4 +1,4 @@
-import { and, desc, eq } from 'drizzle-orm';
+import { and, count, desc, eq } from 'drizzle-orm';
 import { db } from '$lib/server/db';
 import {
 	scores,
@@ -7,7 +7,9 @@ import {
 	userRatingSummaryDx,
 	userRatingSummaryStd,
 	chartDb,
-	musicDb
+	musicDb,
+	marsUsers,
+	user
 } from '$lib/server/db/schema';
 
 import { calculateRatingStd, calculateRatingDx } from '$lib/util/rating';
@@ -59,6 +61,33 @@ export async function getUserRatingSummaryStd(userId: string) {
 
 export async function getUserRatingSummaryDx(userId: string) {
 	return db.select().from(userRatingSummaryDx).where(eq(userRatingSummaryDx.userId, userId)).get();
+}
+
+export async function getUsersRankedByStdRating() {
+	return db
+		.select({
+			userId: userRatingSummaryStd.userId,
+			best50RatingStd: userRatingSummaryStd.best50Rating,
+			updatedAt: userRatingSummaryStd.updatedAt,
+			username: user.username,
+			displayUsername: user.displayUsername,
+			name: user.name,
+			image: user.image
+		})
+		.from(userRatingSummaryStd)
+		.innerJoin(marsUsers, eq(userRatingSummaryStd.userId, marsUsers.id))
+		.innerJoin(user, eq(marsUsers.authId, user.id))
+		.orderBy(desc(userRatingSummaryStd.best50Rating));
+}
+
+export async function getUserTotalPlays(userId: string) {
+	const result = await db
+		.select({ totalPlays: count() })
+		.from(scores)
+		.where(eq(scores.userId, userId))
+		.get();
+
+	return result?.totalPlays ?? 0;
 }
 
 async function refreshUserChartBestStd(
