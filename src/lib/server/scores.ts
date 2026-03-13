@@ -9,8 +9,7 @@ import {
 } from '$lib/server/db/schema';
 
 import { calculateRatingStd, calculateRatingDx } from '$lib/util/rating';
-
-type RatingSystem = 'STD' | 'DX';
+import type { RatingType } from '$lib/util/rating';
 
 type ScoreRow = typeof scores.$inferSelect;
 type ScoreInsert = typeof scores.$inferInsert;
@@ -24,7 +23,7 @@ type ScoreQueryOptions = {
 };
 
 type BestScoreQueryOptions = ScoreQueryOptions & {
-	ratingSystem?: RatingSystem;
+	ratingSystem?: RatingType;
 };
 
 type RefreshBestResult<TBest> = {
@@ -78,6 +77,8 @@ async function refreshUserChartBestStd(
 		};
 	}
 
+	const scoreRating = await calculateRatingStd(score);
+
 	await db
 		.insert(userChartBestStd)
 		.values({
@@ -87,7 +88,7 @@ async function refreshUserChartBestStd(
 			previousBestScoreId: currentBest?.sourceScoreId ?? null,
 			achievement: score.achievement,
 			dxScore: score.dxScore,
-			rating: calculateRatingStd(score)
+			rating: scoreRating
 		})
 		.onConflictDoUpdate({
 			target: [userChartBestStd.userId, userChartBestStd.chartId],
@@ -96,7 +97,7 @@ async function refreshUserChartBestStd(
 				previousBestScoreId: currentBest?.sourceScoreId ?? null,
 				achievement: score.achievement,
 				dxScore: score.dxScore,
-				rating: calculateRatingStd(score),
+				rating: scoreRating,
 				updatedAt: new Date()
 			}
 		});
@@ -130,6 +131,8 @@ async function refreshUserChartBestDx(
 		};
 	}
 
+	const scoreRating = await calculateRatingDx(score);
+
 	await db
 		.insert(userChartBestDx)
 		.values({
@@ -139,7 +142,7 @@ async function refreshUserChartBestDx(
 			previousBestScoreId: currentBest?.sourceScoreId ?? null,
 			achievement: score.achievement,
 			dxScore: score.dxScore,
-			rating: calculateRatingDx(score)
+			rating: scoreRating
 		})
 		.onConflictDoUpdate({
 			target: [userChartBestDx.userId, userChartBestDx.chartId],
@@ -148,7 +151,7 @@ async function refreshUserChartBestDx(
 				previousBestScoreId: currentBest?.sourceScoreId ?? null,
 				achievement: score.achievement,
 				dxScore: score.dxScore,
-				rating: calculateRatingDx(score),
+				rating: scoreRating,
 				updatedAt: new Date()
 			}
 		});
