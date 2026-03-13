@@ -91,7 +91,7 @@ async function main() {
 					if (!noteInfo || !noteInfo.isEnable) continue;
 
 					const lv = parseInt(noteInfo.level) + parseInt(noteInfo.levelDecimal ?? 0) / 10;
-					const notesDesigner = noteInfo.NotesDesigner?.str ?? '';
+					const notesDesigner = noteInfo.notesDesigner?.str ?? '';
 
 					const chartKey = `${musicId}-${i}`;
 					if (chartMap.has(chartKey)) {
