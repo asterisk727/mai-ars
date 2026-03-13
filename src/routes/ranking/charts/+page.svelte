@@ -2,14 +2,12 @@
 	import type { PageData } from './$types';
 	import { resolve } from '$app/paths';
 	import PaginationControls from '$lib/ui/PaginationControls.svelte';
+	import { getChartTypeIcon, getJacketPath } from '$lib/util/charts';
 
 	let { data }: { data: PageData } = $props();
 
 	const difficultyNames = ['Basic', 'Advanced', 'Expert', 'Master', 'Re:MASTER'] as const;
-
-	function getJacketPath(musicId: number) {
-		return `/d/jackets/${String(musicId % 10000).padStart(6, '0')}.png`;
-	}
+	const difficultyClasses = ['level-0', 'level-1', 'level-2', 'level-3', 'level-4'] as const;
 </script>
 
 <div class="container">
@@ -37,15 +35,26 @@
 							class="jacket"
 						/>
 						<div class="meta">
-							<p class="title">{chart.songName}</p>
+							<div class="chart-title-row">
+								<p class="title">{chart.songName}</p>
+								<img
+									src={getChartTypeIcon(chart.chartType)}
+									alt={`${chart.chartType} chart`}
+									class="chart-type-icon"
+								/>
+							</div>
 							<p class="sub text-desc">{chart.songArtist}</p>
-							<p class="sub text-desc">
-								{difficultyNames[chart.difficultyId] ?? 'Unknown'} · Designer: {chart.chartDesigner ||
-									'Unknown'}
-							</p>
+							<p class="sub text-desc">Designer: {chart.chartDesigner || 'Unknown'}</p>
 						</div>
 						<div class="stats">
-							<span>Lv {chart.chartConstant.toFixed(1)}</span>
+							<div class="difficulty-stats">
+								<span class={`difficulty-name ${difficultyClasses[chart.difficultyId] ?? ''}`}>
+									{difficultyNames[chart.difficultyId] ?? 'Unknown'}
+								</span>
+								<span class={`difficulty-level ${difficultyClasses[chart.difficultyId] ?? ''}`}>
+									Lv {chart.chartConstant.toFixed(1)}
+								</span>
+							</div>
 							<span>{chart.totalScores} plays</span>
 						</div>
 					</a>
@@ -119,6 +128,19 @@
 		font-weight: 600;
 	}
 
+	.chart-title-row {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		min-width: 0;
+	}
+
+	.chart-type-icon {
+		width: 46px;
+		height: auto;
+		flex-shrink: 0;
+	}
+
 	.stats {
 		display: flex;
 		flex-direction: column;
@@ -126,6 +148,42 @@
 		gap: 4px;
 		font-size: 0.9rem;
 		color: var(--color-secondary);
+	}
+
+	.difficulty-stats {
+		display: flex;
+		align-items: baseline;
+		gap: 8px;
+	}
+
+	.difficulty-name,
+	.difficulty-level {
+		font-weight: 600;
+	}
+
+	.difficulty-name.level-0,
+	.difficulty-level.level-0 {
+		color: var(--color-level-0);
+	}
+
+	.difficulty-name.level-1,
+	.difficulty-level.level-1 {
+		color: var(--color-level-1);
+	}
+
+	.difficulty-name.level-2,
+	.difficulty-level.level-2 {
+		color: var(--color-level-2);
+	}
+
+	.difficulty-name.level-3,
+	.difficulty-level.level-3 {
+		color: var(--color-level-3);
+	}
+
+	.difficulty-name.level-4,
+	.difficulty-level.level-4 {
+		color: var(--color-level-4);
 	}
 
 	@media (max-width: 720px) {

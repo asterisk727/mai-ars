@@ -5,6 +5,7 @@ import {
 	getChartPersonalBestsStd,
 	getChartPersonalBestsStdCount
 } from '$lib/server/scores';
+import { getChartType } from '$lib/server/charts';
 import { getPaginationMeta, parsePageParam } from '$lib/util/pagination';
 
 export type ChartLeaderboardEntry = {
@@ -26,6 +27,7 @@ export const load = (async ({ params, url }) => {
 	}
 
 	const chart = await getChartLeaderboardInfo(chartId);
+	const chartType = await getChartType(chartId);
 
 	if (!chart) {
 		throw error(404, 'Chart not found');
@@ -49,7 +51,10 @@ export const load = (async ({ params, url }) => {
 	}));
 
 	return {
-		chart,
+		chart: {
+			...chart,
+			chartType
+		},
 		pagination,
 		leaderboard: leaderboard as ChartLeaderboardEntry[]
 	};

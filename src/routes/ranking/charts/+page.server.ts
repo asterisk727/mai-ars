@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types';
-import { getAllChartsPaginated, getChartPlayCount } from '$lib/server/charts';
+import { getAllChartsPaginated, getChartPlayCount, type ChartType } from '$lib/server/charts';
 import { getPaginationMeta, parsePageParam } from '$lib/util/pagination';
 
 const PAGE_SIZE = 50;
@@ -13,6 +13,7 @@ export type ChartBrowseEntry = {
 	songName: string;
 	songArtist: string;
 	totalScores: number;
+	chartType: ChartType;
 };
 
 export const load = (async ({ url }) => {

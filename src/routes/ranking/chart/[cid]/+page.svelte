@@ -3,13 +3,13 @@
 	import { resolve } from '$app/paths';
 	import RankingRow from '$lib/ui/RankingRow.svelte';
 	import PaginationControls from '$lib/ui/PaginationControls.svelte';
+	import { getChartTypeIcon, getJacketPath } from '$lib/util/charts';
 
 	let { data }: { data: PageData } = $props();
 
 	const difficultyNames = ['Basic', 'Advanced', 'Expert', 'Master', 'Re:MASTER'] as const;
-	const jacketPath = $derived(
-		`/d/jackets/${String(data.chart.musicId % 10000).padStart(6, '0')}.png`
-	);
+	const difficultyClasses = ['level-0', 'level-1', 'level-2', 'level-3', 'level-4'] as const;
+	const jacketPath = $derived(getJacketPath(data.chart.musicId));
 </script>
 
 <div class="container">
@@ -20,12 +20,24 @@
 		<div class="chart-meta">
 			<img src={jacketPath} alt={`${data.chart.songName} jacket`} class="jacket" />
 			<div class="info">
-				<p class="title">{data.chart.songName}</p>
+				<div class="chart-title-row">
+					<p class="title">{data.chart.songName}</p>
+					<img
+						src={getChartTypeIcon(data.chart.chartType)}
+						alt={`${data.chart.chartType} chart`}
+						class="chart-type-icon"
+					/>
+				</div>
 				<p class="text-desc">{data.chart.songArtist}</p>
 				<p class="text-desc">
-					{difficultyNames[data.chart.difficultyId] ?? 'Unknown'} · Lv {data.chart.chartConstant.toFixed(
-						1
-					)} · {data.chart.chartDesigner || 'Unknown'}
+					<span class={`difficulty-name ${difficultyClasses[data.chart.difficultyId] ?? ''}`}>
+						{difficultyNames[data.chart.difficultyId] ?? 'Unknown'}
+					</span>
+					·
+					<span class={`difficulty-level ${difficultyClasses[data.chart.difficultyId] ?? ''}`}>
+						Lv {data.chart.chartConstant.toFixed(1)}
+					</span>
+					· {data.chart.chartDesigner || 'Unknown'}
 				</p>
 			</div>
 		</div>
@@ -101,6 +113,49 @@
 
 	.title {
 		font-weight: 600;
+	}
+
+	.chart-title-row {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		min-width: 0;
+	}
+
+	.chart-type-icon {
+		width: 46px;
+		height: auto;
+		flex-shrink: 0;
+	}
+
+	.difficulty-name,
+	.difficulty-level {
+		font-weight: 600;
+	}
+
+	.difficulty-name.level-0,
+	.difficulty-level.level-0 {
+		color: var(--color-level-0);
+	}
+
+	.difficulty-name.level-1,
+	.difficulty-level.level-1 {
+		color: var(--color-level-1);
+	}
+
+	.difficulty-name.level-2,
+	.difficulty-level.level-2 {
+		color: var(--color-level-2);
+	}
+
+	.difficulty-name.level-3,
+	.difficulty-level.level-3 {
+		color: var(--color-level-3);
+	}
+
+	.difficulty-name.level-4,
+	.difficulty-level.level-4 {
+		color: var(--color-level-4);
 	}
 
 	.ranking-list {

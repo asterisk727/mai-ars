@@ -22,33 +22,6 @@ export async function getChartConstant(chartId: number) {
 	return result?.lv ?? 0;
 }
 
-export async function getAllCharts() {
-	return db
-		.select({
-			chartId: chartDb.chartId,
-			musicId: chartDb.musicId,
-			difficultyId: chartDb.difficultyId,
-			chartConstant: chartDb.lv,
-			chartDesigner: chartDb.notesDesigner,
-			songName: musicDb.name,
-			songArtist: musicDb.artist,
-			totalScores: count(scores.scoreId)
-		})
-		.from(chartDb)
-		.innerJoin(musicDb, eq(chartDb.musicId, musicDb.musicId))
-		.leftJoin(scores, eq(chartDb.chartId, scores.chartId))
-		.groupBy(
-			chartDb.chartId,
-			chartDb.musicId,
-			chartDb.difficultyId,
-			chartDb.lv,
-			chartDb.notesDesigner,
-			musicDb.name,
-			musicDb.artist
-		)
-		.orderBy(desc(count(scores.scoreId)), asc(chartDb.musicId), asc(chartDb.difficultyId));
-}
-
 export async function getAllChartsPaginated(options: { limit: number; offset: number }) {
 	let query = db
 		.select({
@@ -77,8 +50,14 @@ export async function getAllChartsPaginated(options: { limit: number; offset: nu
 		.$dynamic();
 
 	query = query.limit(options.limit).offset(options.offset);
+	const charts = await query;
 
-	return query;
+	return Promise.all(
+		charts.map(async (chart) => ({
+			...chart,
+			chartType: await getChartType(chart.chartId)
+		}))
+	);
 }
 
 export async function getChartPlayCount() {
