@@ -17,13 +17,13 @@
 			<a href={resolve('/ranking')}>
 				<span>rankings</span>
 			</a>
-			<a href={resolve('/users/account')}>
-				{#if $session.data?.user}
+			{#if $session.data?.user}
+				<a href={resolve('/users/')}>
 					<span>Hey, {$session.data.user.name}</span>
-				{:else}
-					<span>account</span>
-				{/if}
-			</a>
+				</a>
+			{:else}
+				<a href={resolve('/account')}><span>account</span></a>
+			{/if}
 		</div>
 	</nav>
 

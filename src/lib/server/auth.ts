@@ -1,4 +1,4 @@
-import { betterAuth } from 'better-auth/minimal';
+import { betterAuth } from 'better-auth';
 import { username } from 'better-auth/plugins';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { sveltekitCookies } from 'better-auth/svelte-kit';
@@ -8,7 +8,7 @@ import { db } from '$lib/server/db';
 import { marsUsers } from '$lib/server/db/schema';
 
 export const auth = betterAuth({
-	baseURL: env.ORIGIN,
+	baseURL: env.BETTER_AUTH_URL || undefined,
 	secret: env.BETTER_AUTH_SECRET,
 	database: drizzleAdapter(db, { provider: 'sqlite' }),
 	usePlural: true,

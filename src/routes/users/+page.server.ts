@@ -6,8 +6,8 @@ export const load: PageServerLoad = async ({ request }) => {
 	const session = await auth.api.getSession({ headers: request.headers });
 
 	if (session?.user) {
-		return redirect(302, `/users/u/${session.user.username}`);
+		return redirect(302, `/users/${session.user.username}`);
 	} else {
-		return redirect(302, '/users/account/');
+		return redirect(302, '/account/');
 	}
 };
