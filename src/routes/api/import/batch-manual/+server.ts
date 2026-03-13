@@ -4,7 +4,7 @@ import { marsUsers, chartDb, musicDb } from '$lib/server/db/schema';
 import { userUpsertScore } from '$lib/server/scores';
 import { eq } from 'drizzle-orm';
 import { auth } from '$lib/server/auth';
-import type { RequestHandler } from './$types';
+import type { RequestHandler } from '../$types';
 import { scorePlayLamps } from '$lib/types/score-lamps';
 
 type BatchManualScore = {
@@ -40,10 +40,10 @@ function getDifficultyId(diffString: string | undefined): number {
 function parseLamp(lampStr: string | undefined): (typeof scorePlayLamps)[number] {
 	if (!lampStr) return 'UNKNOWN';
 	const l = lampStr.toUpperCase();
-	if (l.includes('ALL PERFECT+') || l === 'AP+') return 'ALL_PERFECT_PLUS';
-	if (l.includes('ALL PERFECT') || l === 'AP') return 'ALL_PERFECT';
-	if (l.includes('FULL COMBO+') || l === 'FC+') return 'FULL_COMBO_PLUS';
-	if (l.includes('FULL COMBO') || l === 'FC') return 'FULL_COMBO';
+	if (l.includes('ALL PERFECT+')) return 'ALL_PERFECT_PLUS';
+	if (l.includes('ALL PERFECT')) return 'ALL_PERFECT';
+	if (l.includes('FULL COMBO+')) return 'FULL_COMBO_PLUS';
+	if (l.includes('FULL COMBO')) return 'FULL_COMBO';
 	if (l === 'CLEAR' || l === 'FAILED') return 'NONE';
 	return 'UNKNOWN';
 }
@@ -102,7 +102,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
 	for (const score of body.scores) {
 		if (typeof score.percent !== 'number' || score.percent < 0 || score.percent > 101.0) {
-			rejected.push({ score, reason: `Invalid percent value: ${score.percent}` });
+			rejected.push({ score, reason: `Invalid achievement score: ${score.percent}` });
 			continue;
 		}
 
@@ -188,7 +188,6 @@ export const POST: RequestHandler = async ({ request }) => {
 		success: true,
 		importedCount,
 		rejectedCount: rejected.length,
-		totalCount: body.scores.length,
 		rejected
 	});
 };
