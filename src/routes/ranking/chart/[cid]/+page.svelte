@@ -102,6 +102,7 @@
 
 	.title {
 		font-weight: 600;
+		margin: 0;
 	}
 
 	.chart-title-row {

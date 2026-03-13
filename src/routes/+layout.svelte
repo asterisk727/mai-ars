@@ -14,7 +14,10 @@
 			<span>MaiARS</span>
 		</a>
 		<div class="nav-links">
-			<a href={resolve('/ranking')}>
+			<a href={resolve('/ranking/charts')}>
+				<span>charts</span>
+			</a>
+			<a href={resolve('/ranking/rating')}>
 				<span>rankings</span>
 			</a>
 			{#if $session.data?.user}
@@ -73,5 +76,11 @@
 	span:hover {
 		color: var(--color-primary);
 		transition: color var(--transition);
+	}
+
+	@media (max-width: 420px) {
+		.logo {
+			visibility: hidden;
+		}
 	}
 </style>
